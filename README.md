@@ -1,4 +1,4 @@
-# BlinkCloudSync
+# RaspiUsbCloudSync
 
 ## Raspberry Pi Zero W as USB stick
 
@@ -19,6 +19,7 @@ dtoverlay=dwc2
 
 #### cmdline.txt
 After rootwait in /boot/cmdline.txt add as one line:
+
 ```modules-load=dwc2,g_mass_storage g_mass_storage.file=/piusb.bin g_mass_storage.stall=0 g_mass_storage.removable=y g_mass_storage.ro=0 g_mass_storage.iSerialNumber=1234567890```
 
 ### Creating a 2GB USB share
@@ -28,8 +29,8 @@ The content of the USB share is stored in a file called piusb.bin.
  ```
 sudo apt-get install exfat-fuse
 sudo apt-get install exfat-utils
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=2048
-sudo mkfs.exfat /piusb.bin
+sudo dd bs=1M if=/dev/zero of=/piusb.bin count=2048 # create file
+sudo mkfs.exfat /piusb.bin # format
 
 sudo mkdir /mnt/usb_share
 sudo nano /etc/fstab → /piusb.bin /mnt/usb_share exfat noauto,nofail,users,umask=000 0 2
