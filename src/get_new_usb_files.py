@@ -5,10 +5,10 @@ def get_files_since_point_in_time(rootdir, pointInTime, newestDirCount):
     allFiles = []
     directories = []
     for item in os.scandir(rootdir):
-        if item.is_file() and (item.stat().st_mtime > pointInTime):          
+        if item.is_file() and (item.stat().st_mtime > pointInTime):
             allFiles.append(item.path)
         elif item.is_dir():
-            directories.append(item)                    
+            directories.append(item)
     # Continue for the newestDirCount newest folders in current directory
     directories.sort(key=lambda d: d.stat().st_mtime, reverse=True)
     for i in range(newestDirCount):
@@ -18,43 +18,34 @@ def get_files_since_point_in_time(rootdir, pointInTime, newestDirCount):
 
 
 def copy_file_with_directory_structure(sourceBasePath, sourceFile, destBasePath):
-    relativePath = os.path.relpath(sourceFile, sourceBasePath)   
+    relativePath = os.path.relpath(sourceFile, sourceBasePath)
     dstPath =  os.path.join(destBasePath, os.path.dirname(relativePath))
+    print(f"Copy {sourceFile} to {dstPath}")
     os.makedirs(dstPath, exist_ok=True)
     shutil.copy2(sourceFile, dstPath)
 
-def aquire_lock(lockFile):
-    if os.path.isfile(lockFile):
-        time.sleep(0.2)
-    else:
-        Path(lockFile).touch()
 
-def release_lock(lockFile):
-    if os.path.isfile(lockFile):
-        os.remove(lockFile) 
-
-# WORK IN PROGRESS
-fileToCheck = "c:/temp/test.txt"  # /piusb.bin
-sourceDir = 'c:/temp/'
-destinationDir = 'c:/dest/'
-# sourceDir = '/mnt/usb_share'
-# destinationDir = '~/transfer'
+fileToCheck = '/piusb.bin'
+sourceDir = '/mnt/usb_share'
+destinationBaseDir = '/home/pi/transfer'
+copyingActiveFile = os.path.join(destinationBaseDir, 'copyingActive')
 lastModifyTime = os.stat(fileToCheck).st_mtime
-lockFile = os.path.join(destinationDir, 'lock')
 
 while (True):
     currentModifyTime = os.stat(fileToCheck).st_mtime
+    destinationDir = os.path.join(destinationBaseDir, str(int(currentModifyTime)))
     if (currentModifyTime > lastModifyTime):        
-        aquire_lock(lockFile)
-        # subprocess.call(['sudo', 'modprobe', '-r', 'g_mass_storage'])        
-        # subprocess.call(['sudo', 'mount', sourceDir])
-        time.sleep(1)        
-        newFiles = get_files_since_point_in_time(sourceDir, lastModifyTime, newestDirCount=2)       
+        subprocess.call(['sudo', 'mount', sourceDir])
+        time.sleep(0.5)
+        newFiles = get_files_since_point_in_time(sourceDir, lastModifyTime, newestDirCount=2)
+        Path(copyingActiveFile).touch()
         for file in newFiles:
-            copy_file_with_directory_structure(sourceDir, file, destinationDir)      
-        # subprocess.call(['sudo', 'umount', '-f', sourceDir]) # -f force
-        # subprocess.call(['sudo', 'modprobe', 'g_mass_storage', 'file=/piusb.bin', 'stall=0', 'removable=y', 'iSerialNumber=1234567890'])      
-        release_lock(lockFile)
-        lastModifyTime = currentModifyTime
+            copy_file_with_directory_structure(sourceDir, file, destinationDir)
+        if os.path.isfile(copyingActiveFile):
+            os.remove(copyingActiveFile)
+        subprocess.call(['sudo', 'umount', '-f', sourceDir]) # -f force    
+        time.sleep(0.5)     
+        lastModifyTime = os.stat(fileToCheck).st_mtime
     else:
-        time.sleep(5)
+        time.sleep(3)
+
