@@ -1,0 +1,7 @@
+[Unit]
+Description=Activate USB mass storage.
+[Service]
+Type=idle
+ExecStart=/usr/sbin/modprobe g_mass_storage file=/piusb.bin stall=0 removable=y ro=0 iSerialNumber=1122334455
+[Install]
+WantedBy=multi-user.target
