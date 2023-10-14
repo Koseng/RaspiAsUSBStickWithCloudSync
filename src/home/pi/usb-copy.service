@@ -1,0 +1,10 @@
+[Unit]
+Description=Checks and copies new usb files
+After=multi-user.target
+[Service]
+Type=simple
+User=pi
+Restart=always
+ExecStart=/usr/bin/python3 /home/pi/copy_new_usb_files.py
+[Install]
+WantedBy=multi-user.target

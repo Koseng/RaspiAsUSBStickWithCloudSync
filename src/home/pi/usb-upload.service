@@ -1,0 +1,10 @@
+[Unit]
+Description=Uploads new files in directory
+After=multi-user.target
+[Service]
+Type=simple
+User=pi
+Restart=always
+ExecStart=/usr/bin/python3 /home/pi/upload_new_files.py
+[Install]
+WantedBy=multi-user.target

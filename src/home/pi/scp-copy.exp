@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+
+set password "MY_PASSWORD";
+set sshport 22
+
+set source [lindex $argv 0];
+set dest [lindex $argv 1];
+set x ${password}\r
+
+spawn sh -c "scp -P $sshport -r $source $dest"
+expect {
+    -re ".*es.*o.*" {
+    exp_send "yes\r"
+    exp_continue
+  }
+    -re ".*sword.*" {
+    exp_send $x
+  }
+}
+interact
