@@ -11,18 +11,17 @@ echo "Done"
 echo "-----------------------------------------------------------------"
 echo "Create the 3GB USB share"
 echo "-----------------------------------------------------------------"
-sudo apt-get update
-sudo apt-get -y install exfat-fuse
-sudo apt-get -y install exfat-utils
 echo "Create the 3GB USB image file - BE PATIENT FOR SEVERAL MINUTES"
 sudo dd bs=1M if=/dev/zero of=/piusb.bin count=3072 # create file
-sudo mkfs.exfat /piusb.bin # format
-sudo mkdir /mnt/usb_share
-sudo sh -c "grep -qF '/piusb.bin /mnt/usb_share' /etc/fstab || echo '/piusb.bin /mnt/usb_share exfat noauto,nofail,users,umask=000 0 2' >> /etc/fstab"
+echo 'type=07' | sudo sfdisk /piusb.bin # create exfat primary partition
+loopd=$(sudo losetup --partscan --show --find /piusb.bin) # create loop device
+sudo mkfs.exfat -L Raspi "${loopd}p1" # format with exfat
+sudo mkdir -p /mnt/usb_share
 
 echo "-----------------------------------------------------------------"
 echo "Prepare python copy and upload services"
 echo "-----------------------------------------------------------------"
+sudo apt-get update
 sudo apt-get -y install expect
 sudo apt-get -y install python3-dropbox
 

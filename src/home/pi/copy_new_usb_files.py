@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import os, subprocess, shutil, time
+import os, subprocess, shutil, time, json
 import logging, logging.handlers
 from pathlib import Path
 
-USB_IMAGE_FILE = '/piusb.bin'
+USB_IMG = '/piusb.bin'
 SOURCE_DIR = '/mnt/usb_share'
 DESTINATION_BASE_DIR = '/home/pi/transfer'
 COPYING_ACTIVE_FILE = os.path.join(DESTINATION_BASE_DIR, 'copyingActive')
@@ -46,16 +46,27 @@ def copy_file_with_directory_structure(source_base_path, source_file_path, dest_
     os.makedirs(destination_path, exist_ok=True)
     shutil.copy2(source_file_path, destination_path)
 
+
+def get_loop_device():
+    jsonLoop = json.loads(subprocess.run(['losetup', '-l', '-J'], capture_output=True, text=True).stdout)
+    for ld in jsonLoop['loopdevices']:
+        if ld['back-file'] == USB_IMG: 
+            return ld['name']
+    result = subprocess.run(['sudo', 'losetup', '-fP', '--show', USB_IMG ], capture_output=True, text=True)
+    return result.stdout.strip()
+
 # MAIN
 setup_logging("/home/pi/logs/copyLogging.log") 
 try:
-    logging.info(f"----STARTED copy_new_usb_files.py----")
-    last_modify_time = os.stat(USB_IMAGE_FILE).st_mtime
+    logging.info("----STARTED copy_new_usb_files.py----")
+    loopDevice = get_loop_device() + 'p1' # primary partition 1
+    logging.info(f"Loop Device: {loopDevice}")
+    last_modify_time = os.stat(USB_IMG).st_mtime
     while (True):
-        current_modify_time = os.stat(USB_IMAGE_FILE).st_mtime
+        current_modify_time = os.stat(USB_IMG).st_mtime
         destinationDir = os.path.join(DESTINATION_BASE_DIR, str(int(current_modify_time)))
-        if (current_modify_time > last_modify_time):
-            subprocess.call(['sudo', 'mount', SOURCE_DIR])
+        if (current_modify_time > last_modify_time):           
+            subprocess.call(['sudo', 'mount', '-t', 'exfat', loopDevice, SOURCE_DIR])
             time.sleep(0.5)
             new_files = get_files_since_point_in_time(SOURCE_DIR, last_modify_time, newest_dir_count=2)
             Path(COPYING_ACTIVE_FILE).touch()
@@ -65,7 +76,7 @@ try:
                 os.remove(COPYING_ACTIVE_FILE)
             subprocess.call(['sudo', 'umount', '-f', SOURCE_DIR]) # -f force
             time.sleep(0.5)
-            last_modify_time = os.stat(USB_IMAGE_FILE).st_mtime
+            last_modify_time = os.stat(USB_IMG).st_mtime
         else:
             time.sleep(3)
 except Exception as ex:

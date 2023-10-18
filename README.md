@@ -1,86 +1,50 @@
 # RaspiAsUSBStickWithCloudSync
 
-## Raspberry Pi Zero W as USB stick
+![Overview pic](doc/overview.png)
 
-For using Linux USB "On-The-Go" (OTG)  with the Raspberry Pi Zero W, a different USB driver is necessary. The standard heavily patched and performance oriented driver does not support OTG mode. Instead the dwc2 driver needs to be used.
+A Raspberry Pi Zero W is used as a USB Stick with integrated cloud sync. All files written to the USB drive are either copied to a Dropbox account or another linux server. Power is supplied by USB port. 
 
-For OTG mode there are different [gadget drivers](http://www.linux-usb.org/gadget/). A Raspberry Pi Zero W can behave like an USB stick with the [g_mass_storage](https://www.kernel.org/doc/Documentation/usb/mass-storage.txt) driver. A more complex alternative is using libcomposite with configfs.
+For example, this can  be used with camera systems where videos are synced to a local USB stick. Each new video file is automatically uploaded to a free Dropbox account and can be viewed and replayed with the Dropbox app.
 
-### Install Raspi OS Debian Bookworm
-Use [Raspberry Pi Imager](ttps://www.raspberrypi.com/software/). 
-https://www.raspberrypi.com/documentation/computers/getting-started.html
+Some very basic linux skills are necessary.
 
-- Select operating system: Raspberry Pi OS (other) -> Raspberry Pi OS Lite (32bit)
-- Before writing, open settings with gear symbol button
-    - Set Hostname: raspberrypi.local
-    - Enable SSH with Password
-    - Username: pi
+## Quickstart WIP
+Scripts and manual are prepared for Debian Bookworm based Raspberry image. Micro-SD card should be at least 16GB. 
+1. [Get](https://rpilocator.com/) and install a Raspberry Pi Zero W with the [Raspberry Pi Imager](https://www.raspberrypi.com/software/). 
+    - CHOOSE OS: Raspberry Pi OS (other) -> Raspberry Pi OS Lite (32bit)
+    - CHOOSE STORAGE
+    - Settings (Gear Symbol)
+        - Set Hostname: raspberrypi.local
+        - Enable SSH with Password
+        - Username: pi
+        - Password: YOUR_PASSWORD
+        - Setup your Wifi (important)
+    - WRITE
+2. Download latest release from RaspiAsUSBStickWithCloudSync and extract files
+3. Adapt files for Dropbox sync or linux server sync
+    - Create and configure Dropbox
+    - Configure linux server sync
+4. Power up your Raspberry Pi Zero W. First startup might take some time.
+5. Copy all files to `/home/pi` on the Raspberry Pi. For example use [WinSCP](https://winscp.net/eng/download.php):
+    - File protocol: SFTP
+    - Host name: raspberrypi.local
+    - User name: pi
     - Password: YOUR_PASSWORD
-    - Setup Wifi
+6. Login to Raspberry Pi with SSH and execute command `bash /home/pi/execute_setup.sh`.
+For example use [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) with Host name: raspberrypi.local and user: pi
+> The setup script downloads and installs necessary software components, configures driver modules as well as services and creates the USB drive image.
+7. Restart and you are all set. For a first test connect the pi with it's USB port to your PC and see whether the USB drive is accessible. Create a folder with some files and check whether it is auto uploaded to configured Dropbox or linux server.
+8. Connect to system of your choice, for example camera system with sync to USB.
 
-Instructions for Raspi OS Debian Bookworm
 
-### Load the driver
 
-> In `/boot/firmware/config.txt` comment out `otg_mode` and add `dtoverlay=dwc2`
+## Diagnose
+- Wifi
+- Log Files
+- Mount test
 
-```
-sudo grep -qxF '#otg_mode=1' /boot/firmware/config.txt || sudo sed -i '/^otg_mode=1/s/^/#/' /boot/firmware/config.txt
-sudo sh -c "grep -qxF 'dtoverlay=dwc2' /boot/firmware/config.txt || echo 'dtoverlay=dwc2' >> /boot/firmware/config.txt"
-```
+## More information
+xx
 
-> In `/etc/modules` add `dwc2`:
-
-```
-sudo sh -c "grep -qxF 'dwc2' /etc/modules || echo 'dwc2' >> /etc/modules"
-```
-
-### Create the 3GB USB share
-
-> First install packages for exfat file system. Then create and format usb image file piusb.bin. Finally prepare mounting.
-
- ```
-sudo apt-get update
-sudo apt-get -y install exfat-fuse
-sudo apt-get -y install exfat-utils
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=3072 # create file
-sudo mkfs.exfat /piusb.bin # format
-sudo mkdir /mnt/usb_share
-```
-> In `/etc/fstab` add `/piusb.bin /mnt/usb_share exfat noauto,nofail,users,umask=000 0 2`
-```
-sudo sh -c "grep -qF '/piusb.bin /mnt/usb_share' /etc/fstab || echo '/piusb.bin /mnt/usb_share exfat noauto,nofail,users,umask=000 0 2' >> /etc/fstab"
-```
-
-### Activate USB mass storage
-Create system service to activate USB mass storage at the very end of the boot process. Therefore setting the type to idle is important. 
-
-Copy `usb-storage.service` to `/etc/systemd/system/` then
-```
-sudo mv /home/pi/usb-storage.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/usb-storage.service
-sudo systemctl enable usb-storage.service
-```
-
-### Transfer to Linux server via SCP
-- Create the destination directory on the server e.g. /home/myuser/transfer
-- Install expect `sudo apt-get -y install expect`
-- Change password in scp-copy.exp
-
-### Activate python scripts
-
-```
-sudo apt-get -y install python3-dropbox
-```
-
-### Activate copy and upload service
-```
-sudo chmod 644 /etc/systemd/system/usb-copy.service
-sudo systemctl enable usb-copy.service
-sudo chmod 644 /etc/systemd/system/usb-upload.service
-sudo systemctl enable usb-upload.service
-```
-
- 
-
+### License
 
