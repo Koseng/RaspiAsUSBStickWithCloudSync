@@ -44,11 +44,11 @@ curl https://api.dropbox.com/oauth2/token -d code=ACCESS_CODE -d grant_type=auth
 
 - Finally copy the refresh token from the returned result.
 >  ...
-   "token_type": "bearer",
-   "expires_in": 14400,
-   "refresh_token": "**aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1_bbbbbbbbb-y**",
-   "scope": "account_info.read files.content.read files.content.write files.metadata.read files.metadata.write",
-   ...
+>  "token_type": "bearer",
+>  "expires_in": 14400,
+>  "refresh_token": "**aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1_bbbbbbbbb-y**",
+>  "scope": "account_info.read files.content.read files.content.write files.metadata.read files.metadata.write",
+>  ...
 
 
 ### 3. Enter settings in the upload script

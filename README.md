@@ -25,7 +25,7 @@ Scripts and manual are prepared for Debian Bookworm based Raspberry image. Micro
     - WRITE
 2. Download latest release from RaspiAsUSBStickWithCloudSync and extract files
 3. Adapt files for Dropbox sync or linux server sync
-    - [Prepare and configure Dropbox](doc/documentation.md)
+    - [Prepare and configure Dropbox](doc/dropbox.md)
     - Configure linux server sync
 4. Copy all files to `/home/pi` on the Raspberry Pi. For example use [WinSCP](https://winscp.net/eng/download.php):
     - File protocol: SFTP
