@@ -6,12 +6,13 @@ After creating a dropbox account, a new app needs to be created in the developer
 
 ![Create app](img/createapp.png)
 
-For accessing the dropbox account from RaspiAsUSBStickWithCloudSync three configuration settings are necessary:
-- APP_KEY
-- APP_SECRET
-- REFRESH_TOKEN
-
-Copy the APP_KEY and APP_SECRET from the app Settings page for later usage.
+> [!NOTE]
+> For accessing the dropbox account from RaspiAsUSBStickWithCloudSync three configuration settings are necessary:
+> - APP_KEY
+> - APP_SECRET
+> - REFRESH_TOKEN
+>
+> Copy the APP_KEY and APP_SECRET from the app Settings page for later usage.
 
 On the Permissions page set the Files and Folder permissions and press Submit.
 
