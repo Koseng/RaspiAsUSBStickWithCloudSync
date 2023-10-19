@@ -1,6 +1,6 @@
 # Dropbox configuration
 
-### 1. Create a new dropbox app
+## 1. Create a new dropbox app
 
 After creating a dropbox account, a new app needs to be created in the developer [App Console](https://www.dropbox.com/developers/apps/).
 
@@ -14,12 +14,12 @@ After creating a dropbox account, a new app needs to be created in the developer
 >
 > Copy the APP_KEY and APP_SECRET from the app Settings page for later usage.
 
-On the Permissions page set the Files and Folder permissions and press Submit.
+**On the Permissions page set the Files and Folder permissions and press Submit.**
 
 ![Permissions app](img/permissionsapp.png)
 
 
-### 2. Get the REFRESH_TOKEN
+## 2. Get the REFRESH_TOKEN
 
 ####  Get the access code
 
@@ -52,7 +52,7 @@ curl https://api.dropbox.com/oauth2/token -d code=ACCESS_CODE -d grant_type=auth
 >  ...
 
 
-### 3. Enter settings in the upload script
+## 3. Enter settings in the upload script
 
 Edit the file `upload_new_files.py` with a text editor and replace the values for APP_KEY, APP_SECRET and REFRESH_TOKEN with your noted values.
 
