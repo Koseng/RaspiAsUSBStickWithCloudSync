@@ -24,7 +24,7 @@ Prepared for Debian Bookworm based Raspberry image. The Micro-SD card should be 
     > - Setup your Wifi (important)
 
 2. Download latest release from RaspiAsUSBStickWithCloudSync and extract files
-3. Adapt files for Dropbox sync or linux server sync
+3. Enter configuration data for Dropbox sync or linux server sync
     - [Prepare and configure Dropbox](doc/dropbox.md)
     - Configure linux server sync
 4. Copy all files to `/home/pi` on the Raspberry Pi. For example use [WinSCP](https://winscp.net/eng/download.php):
@@ -33,12 +33,15 @@ Prepared for Debian Bookworm based Raspberry image. The Micro-SD card should be 
     > - User name: pi
     > - Password: YOUR_PASSWORD
 5. Login to Raspberry Pi with SSH and execute command `bash /home/pi/execute_setup.sh`.
-For example use [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) with Host name: raspberrypi.local and user: pi
+For example use [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) with `Host name: raspberrypi.local` and `user: pi`
 > [!NOTE]
 > The setup script downloads and installs necessary software components, configures driver modules as well as services and creates the USB drive image.
 6. Restart and you are all set. For a first test connect the pi with it's USB port to your PC and see whether the USB drive is accessible. Create a folder with some files and check whether it is auto uploaded to configured Dropbox or linux server.
-7. Connect to system of your choice, for example camera system with sync to USB.
+7. Connect to system of your choice, for example camera system with video sync to USB.
 
+#### View videos in dropbox mobile app: 
+
+![dropbox app](doc/img/dropboxapp.png)
 
 
 ## Diagnose
@@ -47,8 +50,8 @@ For example use [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/lates
 - Mount test
 
 ## More information
-xx
+[Detailed documentation](doc/documentation.md)
 
 ### License
-GNU General Public License v3.0
+[GNU General Public License v3.0](LICENSE)
 

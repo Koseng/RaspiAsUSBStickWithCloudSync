@@ -60,8 +60,6 @@ def transfer_to_dropbox(source_dir, config):
                 logging.info(f"FINISH UPLOAD Metadata Path: {file_metadata.path_display}")
 
 
-# todo on start initialize move everything to an archive and beging fresh
-
 # ----------------
 # MAIN
 # ----------------

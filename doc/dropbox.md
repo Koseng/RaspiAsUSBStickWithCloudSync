@@ -21,7 +21,7 @@ After creating a dropbox **Basic** account, a new app needs to be created in the
 
 ## 2. Get the REFRESH_TOKEN
 
-####  Get the access code
+###  Get the access code
 
 - Use a browser and log in to your dropbox account.
 - Replace APP_KEY in the URL with the app_key from you apps setting page.
@@ -32,7 +32,7 @@ https://www.dropbox.com/oauth2/authorize?client_id=APP_KEY&response_type=code&to
 - Copy the generated access code for later usage.
 ![Access code](img/accesscode.png)
 
-#### Call the token API
+### Call the token API
 
 - Replace ACCESS_CODE, APP_KEY and APP_SECRET with your copied values in the command:
 ```
@@ -52,10 +52,8 @@ curl https://api.dropbox.com/oauth2/token -d code=ACCESS_CODE -d grant_type=auth
 >  ...
 
 
-## 3. Enter settings in the upload script
+## 3. Enter settings in configuration file
 
-Edit the file `upload_new_files.py` with a text editor and replace the values for APP_KEY, APP_SECRET and REFRESH_TOKEN with your noted values.
-
-![Upload script](img/uploadscript.png)
+Edit the file `config.json` with a text editor and replace the values for "DropboxAppKey", "DropboxAppSecret" and "DropBoxRefreshToken" with your noted values.
 
 Now everything is set up.
