@@ -1,0 +1,10 @@
+{    
+    "DropboxAppKey" : "xxxxxxxxxxxxx",
+    "DropboxAppSecret" : "yyyyyyyyyyyyyy",
+    "DropBoxRefreshToken": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+    "DropBoxPath": "/",
+    "ScpPath": "myUser@11.22.33.44:/home/myUser/transfer",
+    "KeepMaxFilesOnUSB" : 400,
+    "DeleteOnUSBTime" : 86400,
+    "CopyCheckTime" : 3
+}

@@ -2,7 +2,7 @@
 
 ## 1. Create a new dropbox app
 
-After creating a dropbox account, a new app needs to be created in the developer [App Console](https://www.dropbox.com/developers/apps/).
+After creating a dropbox **Basic** account, a new app needs to be created in the developer [App Console](https://www.dropbox.com/developers/apps/).
 
 ![Create app](img/createapp.png)
 

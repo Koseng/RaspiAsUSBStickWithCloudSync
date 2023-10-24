@@ -1,6 +1,6 @@
 # RaspiAsUSBStickWithCloudSync
 
-A **Raspberry Pi Zero W** is used as a USB Stick with integrated cloud syncronization. All files written to the USB drive are either copied to a Dropbox account or another linux server. Power is supplied by the USB port. 
+A [Raspberry Pi Zero W](https://rpilocator.com/) is used as a USB Stick with integrated cloud syncronization. All files written to the USB drive are either copied to a Dropbox account or another linux server. Power is supplied by the USB port. 
 
 ![Overview pic](doc/img/overview.png)
 
@@ -12,8 +12,8 @@ Each new video file is automatically uploaded to a free Dropbox account and can 
 Some very basic linux skills are necessary.
 
 ## Quickstart
-Prepared for Debian Bookworm based Raspberry image. Micro-SD card should be at least 16GB. 
-1. [Get](https://rpilocator.com/) and install Raspberry Pi OS Lite (32bit) with the [Raspberry Pi Imager](https://www.raspberrypi.com/software/). 
+Prepared for Debian Bookworm based Raspberry image. The Micro-SD card should be at least 16GB. 
+1. Install Raspberry Pi OS Lite (32bit) with the [Raspberry Pi Imager](https://www.raspberrypi.com/software/). 
 ![pi imager](doc/img/piimager.png)
 
 - Settings (Gear Symbol)

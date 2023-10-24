@@ -1,20 +1,13 @@
 #!/usr/bin/env python
 
-import os, subprocess, shutil, time
+import os, subprocess, shutil, time, json
 import logging, logging.handlers
 import dropbox
 from dropbox.files import WriteMode
+from inspect import getsourcefile
 
-# To Dropbox
-APP_KEY = "xxxxxxxxxxxxx"
-APP_SECRET = "yyyyyyyyyyyyyy"
-REFRESH_TOKEN = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
-DROPBOX_PATH = "/"
-
-# To Linux Server via SCP
-SCP_PATH = 'myUser@11.22.33.44:/home/myUser/transfer'
-
-SOURCE_BASE_DIR = '/home/pi/transfer'
+BASE_PATH = os.path.dirname(os.path.abspath(getsourcefile(lambda:0)))
+SOURCE_BASE_DIR = os.path.join(BASE_PATH, 'transfer')
 COPYING_ACTIVE_FILE = os.path.join(SOURCE_BASE_DIR, 'copyingActive')
 
 def setup_logging(log_file_full_path):
@@ -37,11 +30,11 @@ def wait_until_no_copying_active(copy_active_file):
         time.sleep(1)
         max_time += 1
         if (max_time > 30): break
-        
 
-def transfer_via_scp(source_dir, destination):
+
+def transfer_via_scp(source_dir, config):
     source_dir_content = os.path.join(source_dir, '*')
-    result = subprocess.run(['expect', '-f', 'scp-copy.exp', source_dir_content, destination], capture_output=True, text=True)
+    result = subprocess.run(['expect', '-f', 'scp-copy.exp', source_dir_content, config['ScpPath']], capture_output=True, text=True)
     logging.info(f'{result.returncode}' f'{result.stdout}')
 
 
@@ -53,12 +46,15 @@ def get_all_files(folder):
     return all_files
 
 
-def transfer_to_dropbox(source_dir):
-    with dropbox.Dropbox(oauth2_refresh_token=REFRESH_TOKEN, app_key=APP_KEY, app_secret=APP_SECRET) as dbx:  
+def transfer_to_dropbox(source_dir, config):
+    token = config['DropBoxRefreshToken']
+    key = config['DropboxAppKey']
+    secret = config['DropboxAppSecret']
+    with dropbox.Dropbox(oauth2_refresh_token=token, app_key=key, app_secret=secret) as dbx:
         all_files = get_all_files(source_dir)
         for file in all_files:
             with open(file, mode='rb') as f:
-                destination_path = os.path.join(DROPBOX_PATH) + os.path.relpath(file, source_dir)
+                destination_path = os.path.join(config['DropBoxPath']) + os.path.relpath(file, source_dir)
                 logging.info(f"START UPLOAD Path: {destination_path}")
                 file_metadata = dbx.files_upload(f.read(), destination_path, mode=WriteMode('overwrite'))
                 logging.info(f"FINISH UPLOAD Metadata Path: {file_metadata.path_display}")
@@ -66,18 +62,26 @@ def transfer_to_dropbox(source_dir):
 
 # todo on start initialize move everything to an archive and beging fresh
 
+# ----------------
 # MAIN
-setup_logging("/home/pi/logs/uploadLogging.log") 
+# ----------------
+setup_logging(os.path.join(BASE_PATH, 'logs/uploadLogging.log')) 
 try:
     logging.info(f"----STARTED upload_new_files.py----")
     os.makedirs(SOURCE_BASE_DIR, exist_ok=True)
+
+    # load config file
+    with open(os.path.join(BASE_PATH,'config.json')) as config_file:
+        config = json.load(config_file)
+    logging.info(f"Configuration loaded.")
+
     while (True):
         folders_to_transfer = [d for d in os.scandir(SOURCE_BASE_DIR) if d.is_dir()]
         if folders_to_transfer:
             wait_until_no_copying_active(COPYING_ACTIVE_FILE)
             for folder in folders_to_transfer:
-                # transfer_via_scp(folder, destinationSCP)
-                transfer_to_dropbox(folder)
+                # transfer_via_scp(folder, config)
+                transfer_to_dropbox(folder, config)
                 shutil.rmtree(folder) # delete
         time.sleep(4.5)
 except Exception as ex:
