@@ -1,5 +1,4 @@
 #! /bin/sh
-
 echo "-----------------------------------------------------------------"
 echo "Create configuration for loading otg usb drivers on boot"
 echo "-----------------------------------------------------------------"
@@ -28,6 +27,7 @@ sudo apt-get -y install python3-dropbox
 echo "-----------------------------------------------------------------"
 echo "Add system services"
 echo "-----------------------------------------------------------------"
+# [ -f ...] checks whether file exists, only then mv is executed
 [ -f "/home/pi/usb-storage.service" ] && sudo mv /home/pi/usb-storage.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/usb-storage.service
 sudo systemctl enable usb-storage.service
