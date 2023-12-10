@@ -6,7 +6,7 @@
     "DropBoxPath": "/",
     "ActivateScpSync" : 0,
     "ScpPath": "myUser@11.22.33.44:/home/myUser/transfer",
-    "KeepMaxFilesOnUSB" : 400,
+    "KeepMaxFilesOnUSB" : 600,
     "DeleteOnUSBCycleTime" : 86400,
     "CopyCheckCycleTime" : 3
 }
