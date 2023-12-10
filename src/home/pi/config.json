@@ -1,10 +1,12 @@
 {    
+    "ActivateDropboxSync" : 1,
     "DropboxAppKey" : "xxxxxxxxxxxxx",
     "DropboxAppSecret" : "yyyyyyyyyyyyyy",
     "DropBoxRefreshToken": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
     "DropBoxPath": "/",
+    "ActivateScpSync" : 0,
     "ScpPath": "myUser@11.22.33.44:/home/myUser/transfer",
     "KeepMaxFilesOnUSB" : 400,
-    "DeleteOnUSBTime" : 86400,
-    "CopyCheckTime" : 3
+    "DeleteOnUSBCycleTime" : 86400,
+    "CopyCheckCycleTime" : 3
 }

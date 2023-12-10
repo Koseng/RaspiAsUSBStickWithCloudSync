@@ -4,14 +4,19 @@ A [Raspberry Pi Zero W](https://rpilocator.com/) is used as a USB Stick with int
 
 ![Overview pic](doc/img/overview.png)
 
-This can be used in conjunction with a camera system which has the possibility to store the video files locally on a USB stick, but not in the cloud.
+This project can be used in conjunction with a camera system which has the possibility to store the video files locally on a USB stick, but not in the cloud.
 
 Each new video file is automatically uploaded to a free Dropbox account and can subsequently be viewed and replayed with the Dropbox app.
 
-Some very basic linux skills are necessary. Should also work with "Raspberry Pi Zero 2 W". 
+Some very basic linux skills are necessary. Should also work with a "Raspberry Pi Zero 2 W". 
+
+This project is open source software licensed via [GNU General Public License v3.0](LICENSE), use at your own risk.
 
 ## Quickstart
-The Micro-SD card should be at least 16GB. 
+Basic process:
+Install a Raspberry Pi Zero W, adjust project config.json, copy project files to home directory of the Raspi and execute the setup script.
+
+The Micro-SD card should have at least 16GB. 
 
 1. Install Raspberry Pi **OS Lite** (32bit) from category Raspberry Pi OS (other) with the [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Take note whether it is a Debian Bullseye or Debian Bookworm image.
 ![pi imager](doc/img/piimager.png)
@@ -23,15 +28,26 @@ The Micro-SD card should be at least 16GB.
     > - Password: YOUR_PASSWORD
     > - Setup your Wifi (important)
 
-2. Be patient on first setup boot, it might take several minutes on Pi Zero.
+2. Be patient on first setup boot, it might take several minutes on Raspi Zero.
 
-3. Download latest release from RaspiAsUSBStickWithCloudSync and extract files
+3. Download latest [released RaspiAsUSBStickWithCloudSync.zip
+](https://github.com/Koseng/RaspiAsUSBStickWithCloudSync/releases) and extract files
 
-4. Enter configuration data for Dropbox sync or linux server sync
-    - [Prepare and configure Dropbox](doc/dropbox.md)
-    - Configure linux server sync
+4. Update settings in configuration file `config.json`:
 
-5. Copy all files to `/home/pi` on the Raspberry Pi. For example use [WinSCP](https://winscp.net/eng/download.php):
+| Entry                | Description |
+|----------------------|---------------|
+| ActivateDropboxSync  | Activate (1) or deactivate (0) sync to dropbox  |
+| Dropbox...           | [Prepare and configure for Dropbox sync](doc/dropbox.md) |
+| ActivateScpSync      | Activate (1) or deactivate (0) sync to a linux server via SCP |
+| Scp...               | [Prepare and configure for linux server sync](doc/scp.md) |
+| KeepMaxFilesOnUSB    | Maximum number of files kept in the Raspi USB image |
+| DeleteOnUSBCycleTime | Cycle time in seconds after which files above KeepMaxFilesOnUSB are deleted |
+| CopyCheckCycleTime   | Cycle time in seconds after which the Raspi USB image is checked for new files |
+
+5. Copy all extracted and updated files from `home_pi` to `/home/pi` on the Raspberry Pi. 
+    
+    For example use [WinSCP](https://winscp.net/eng/download.php):
     > - File protocol: SFTP
     > - Host name: raspberrypi.local
     > - User name: pi
@@ -58,6 +74,4 @@ The Micro-SD card should be at least 16GB.
 ## More information
 [Detailed documentation](doc/documentation.md)
 
-### License
-[GNU General Public License v3.0](LICENSE)
 

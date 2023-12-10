@@ -85,7 +85,7 @@ def umount(mount_dir):
 
 
 def check_and_delete_on_usb(cycle_counter, device, config):
-    check_count = config['DeleteOnUSBTime'] / config['CopyCheckTime']
+    check_count = config['DeleteOnUSBCycleTime'] / config['CopyCheckCycleTime']
     cycle_counter[0] = cycle_counter[0] + 1
     # time has elapsed to perform the check
     if cycle_counter[0] > check_count:
@@ -143,7 +143,7 @@ try:
     while (True):
         check_and_delete_on_usb(cycle_counter, loop_device, config)
         copy_new_files(last_modify_time, loop_device)
-        time.sleep(config['CopyCheckTime'] )
+        time.sleep(config['CopyCheckCycleTime'] )
 
 except Exception as ex:
     logging.exception(ex)

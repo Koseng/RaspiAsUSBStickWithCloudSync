@@ -78,8 +78,10 @@ try:
         if folders_to_transfer:
             wait_until_no_copying_active(COPYING_ACTIVE_FILE)
             for folder in folders_to_transfer:
-                # transfer_via_scp(folder, config)
-                transfer_to_dropbox(folder, config)
+                if config['ActivateDropboxSync']:
+                    transfer_to_dropbox(folder, config)
+                if config['ActivateScpSync']:
+                    transfer_via_scp(folder, config)                
                 shutil.rmtree(folder) # delete
         time.sleep(4.5)
 except Exception as ex:
