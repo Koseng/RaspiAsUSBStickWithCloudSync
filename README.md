@@ -13,7 +13,7 @@ Some very basic linux skills are necessary. Should also work with a "Raspberry P
 This project is open source software licensed via [GNU General Public License v3.0](LICENSE), use at your own risk.
 
 ## Quickstart
-Basic process:
+**Basic process:**
 Install a Raspberry Pi Zero W, adjust project config.json, copy project files to home directory of the Raspi and execute the setup script.
 
 The Micro-SD card should have at least 16GB. 
@@ -35,15 +35,13 @@ The Micro-SD card should have at least 16GB.
 
 4. Update settings in configuration file `config.json`:
 
-| Entry                | Description |
-|----------------------|---------------|
-| ActivateDropboxSync  | Activate (1) or deactivate (0) sync to dropbox  |
-| Dropbox...           | [Prepare and configure for Dropbox sync](doc/dropbox.md) |
-| ActivateScpSync      | Activate (1) or deactivate (0) sync to a linux server via SCP |
-| Scp...               | [Prepare and configure for linux server sync](doc/scp.md) |
-| KeepMaxFilesOnUSB    | Maximum number of files kept in the Raspi USB image |
-| DeleteOnUSBCycleTime | Cycle time in seconds after which files above KeepMaxFilesOnUSB are deleted |
-| CopyCheckCycleTime   | Cycle time in seconds after which the Raspi USB image is checked for new files |
+    | Entry                | Description |
+    |----------------------|---------------|
+    | ActivateDropboxSync  | Activate (1) or deactivate (0) sync to dropbox  |
+    | Dropbox...           | [Prepare and configure for Dropbox sync](doc/dropbox.md) |
+
+    [Click here for all possible settings.](doc/settings.md)
+
 
 5. Copy all extracted and updated files from `home_pi` to `/home/pi` on the Raspberry Pi. 
     
