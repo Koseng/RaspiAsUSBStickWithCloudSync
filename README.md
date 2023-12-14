@@ -59,6 +59,8 @@ The Micro-SD card should have at least 16GB.
 > The setup script downloads and installs necessary software components, configures driver modules as well as services and creates the USB drive image.
 
 7. Restart and you are all set. For a first test connect the pi with it's USB port to your PC and see whether the USB drive is accessible. Create a folder with some files and check whether it is auto uploaded to configured Dropbox or linux server.
+    - Connect the USB cable to the USB port and not to the PWR port.
+    - Make sure to have a data capable USB cable and not a cable which only support power via USB.
 
 8. Connect to system of your choice, for example camera system with video sync to USB.
 

@@ -8,6 +8,10 @@
 
 If any of the settings is incorrect, correct settings and write image again.
 
+### Raspberry Pi Zero W not detected as USB stick
+- Did you connect the usb cable to the usb port and not the power port?
+- Did you use an usb cable with data support and not only power support?
+
 ### Automatic dropbox upload not working
 - Did you enter all settings correctly in config.json?
 - Check **log files**:
@@ -17,7 +21,6 @@ If any of the settings is incorrect, correct settings and write image again.
     - `sudo dmesg`
 
 ### Manually execute python scripts to investigate
-
 Stop copy and upload system services:
 - `sudo systemctl status usb-copy.service`
 - `sudo systemctl stop usb-copy.service`
